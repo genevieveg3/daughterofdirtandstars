@@ -244,10 +244,3 @@ ul.is-style-pills li{border:1px solid currentColor;padding:10px 18px;border-radi
 .contact-sent p{color:var(--muted);margin:0 0 10px}
 .contact-error{color:var(--terra-dark);font-weight:600}
 #contact-form{scroll-margin-top:110px}
-
-/* Speaking: topics list with photo on the right */
-.topics-split{max-width:1120px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:56px;align-items:center}
-.topics-split__text>*{margin-left:0;margin-right:0;max-width:none}
-.topics-split__photo{margin:0}
-.topics-split__photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:4px;display:block}
-@media (max-width:900px){.topics-split{grid-template-columns:1fr;gap:32px}.topics-split__photo{max-width:420px;margin:0 auto}}
