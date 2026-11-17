@@ -16,4 +16,6 @@
     var upd=function(){sp.hidden=r.value!=='speaking'; fn.hidden=r.value!=='founder';};
     r.addEventListener('change',upd); upd();
   }
+  var sent=document.getElementById('contact-sent');
+  if(sent&&new URLSearchParams(location.search).get('sent')){sent.hidden=false;}
 })();
