@@ -1,0 +1,41 @@
+name: Build static site from WordPress
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/build-static-site.yml"
+      - ".github/scripts/clean_site.py"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror the live WordPress site
+        run: |
+          mkdir -p mirror && cd mirror
+          wget --mirror --page-requisites --adjust-extension --convert-links --no-parent -e robots=off \
+            --restrict-file-names=windows \
+            --reject-regex '(wp-json|xmlrpc|wp-login|\?replytocom|/feed/|wp-admin|oembed|/comments/)' \
+            -nv https://daughterofdirtandstars.com/ || true
+          wget --page-requisites --adjust-extension --convert-links -e robots=off \
+            --restrict-file-names=windows -nv https://daughterofdirtandstars.com/daughter-of-dirt-and-stars/ || true
+          cd ..
+          curl -s 'https://daughterofdirtandstars.com/wp-json/wp/v2/pages?per_page=100&_fields=id,link' > pg.json
+          curl -s 'https://daughterofdirtandstars.com/wp-json/wp/v2/posts?per_page=100&_fields=id,link' > ps.json
+          rm -f mirror/daughterofdirtandstars.com/index.html@p=*.html
+      - name: Convert to clean static HTML
+        run: python3 .github/scripts/clean_site.py
+      - name: Commit static site to the repository
+        run: |
+          rsync -a --delete --exclude '.git' --exclude '.github' --exclude 'mirror' --exclude 'site' --exclude 'pg.json' --exclude 'ps.json' site/ ./
+          rm -rf mirror site pg.json ps.json
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Static export of daughterofdirtandstars.com" || echo "No changes"
+          git push
