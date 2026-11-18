@@ -9,8 +9,8 @@
   --ink:#1E2740;
   --muted:#4A5068;
   --line:#E4D9C6;
-  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
-  --sans:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --serif:"Petrona",Georgia,"Times New Roman",serif;
+  --sans:"Albert Sans","Helvetica Neue",Arial,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
